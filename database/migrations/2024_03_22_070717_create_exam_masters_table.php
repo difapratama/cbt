@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('exam_masters', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id');
             $table->string('name');
-            $table->string('description');
-            $table->integer('is_active')->default(1);
+            $table->date('exam_date');
+            $table->string('exam_duration');
+            $table->string('is_active')->default(1);
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('exam_masters');
     }
 };

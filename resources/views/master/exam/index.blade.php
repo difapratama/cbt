@@ -12,12 +12,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Category</h1>
+                    <h1 class="m-0">Exam Lists</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Master</a></li>
-                        <li class="breadcrumb-item active">Category</li>
+                        <li class="breadcrumb-item active">Exam</li>
                     </ol>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                             <div class="d-flex justify-content-between">
                                 <button type="button" class="btn btn-primary float-left btn-add"><i
                                         class="fas fa-plus"></i>
-                                    Add Category</button>
+                                    Add New Exam</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -58,7 +58,7 @@
             $('.btn-add').on('click', function() {
                 $.ajax({
                     method: 'GET',
-                    url: `{{ url('master/categories/create') }}`,
+                    url: `{{ url('master/exam-masters/create') }}`,
                     success: function(res) {
                         $('#modal-default').find('.modal-dialog').html(res);
                         $('#modal-default').modal('show');
@@ -85,7 +85,7 @@
                         processData: false,
                         contentType: false,
                         success: function(res) {
-                            window.LaravelDataTables["categories-table"].ajax.reload();
+                            window.LaravelDataTables["exammasters-table"].ajax.reload();
                             $('#modal-default').modal('hide');
                         },
                         error: function(res) {
@@ -103,7 +103,7 @@
                 })
             }
 
-            $('#categories-table').on('click', '.action', function() {
+            $('#exammasters-table').on('click', '.action', function() {
                 let data = $(this).data();
                 let id = data.id;
                 let button_type = $(this).attr('button-type');
@@ -121,13 +121,13 @@
                         if (result.isConfirmed) {
                             $.ajax({
                                 method: 'DELETE',
-                                url: `{{ url('master/categories/') }}/${id}`,
+                                url: `{{ url('master/exam-masters/') }}/${id}`,
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
                                         'content')
                                 },
                                 success: function(res) {
-                                    window.LaravelDataTables["categories-table"].ajax
+                                    window.LaravelDataTables["exammasters-table"].ajax
                                         .reload();
                                     Swal.fire(
                                         'Deleted!',
@@ -142,7 +142,7 @@
                 } else {
                     $.ajax({
                         method: 'GET',
-                        url: `{{ url('master/categories/') }}/${id}/edit`,
+                        url: `{{ url('master/exam-masters/') }}/${id}/edit`,
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
                                 'content')

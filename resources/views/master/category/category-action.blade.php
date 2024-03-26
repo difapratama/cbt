@@ -1,5 +1,5 @@
 <div class="modal-content">
-    <form id="formAction" action="{{ $category->id ? route('roles.update', $category->id) : route('roles.store') }}"
+    <form id="formAction" action="{{ $category->id ? route('categories.update', $category->id) : route('categories.store') }}"
         method="post">
         @csrf
         @if ($category->id)
@@ -15,23 +15,21 @@
             </button>
         </div>
         <div class="modal-body">
-
             <div class="row">
-                <div class="col-sm-6">
-                    <!-- text input -->
+                <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Name</label>
+                        <label>Category Name</label>
                         <input type="text" value="{{ $category->name }}" name="name" class="form-control"
                             placeholder="Enter ...">
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Status</label>
-                        <input type="text" value="{{ $category->guard_name }}" name="guard_name" class="form-control"
-                            placeholder="Enter ...">
+                        <label>Description</label>
+                        <textarea class="form-control" name="description" rows="3" placeholder="Description here ..">{{ $category->description }}</textarea>
                     </div>
                 </div>
+                <input type="hidden" name="is_active" value="{{ 1 }}">
             </div>
         </div>
         <div class="modal-footer justify-content-between">

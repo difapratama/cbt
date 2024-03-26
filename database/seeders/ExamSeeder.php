@@ -3,10 +3,11 @@
 namespace Database\Seeders;
 
 use Carbon\Carbon;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CategorySeeder extends Seeder
+class ExamSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,17 +18,21 @@ class CategorySeeder extends Seeder
     {
         $now = Carbon::now();
 
-        DB::table('categories')->insert([
-            'name' => 'CBT Reading',
-            'description' => 'Kumpulan soal soal untuk persiapan CBT Reading di Seoul',
+        DB::table('exam_masters')->insert([
+            'category_id' => 1,
+            'name' => 'Listening Daily Activiy',
+            'exam_date' => $now,
+            'exam_duration' => '20',
             'is_active' => 1,
             'created_at' => $now,
             'updated_at' => $now
         ]);
 
-        DB::table('categories')->insert([
-            'name' => 'CBT Listening',
-            'description' => 'Kumpulan soal soal untuk persiapan CBT Listening di Seoul',
+        DB::table('exam_masters')->insert([
+            'category_id' => 2,
+            'name' => 'Listening How to work in factory',
+            'exam_date' => $now,
+            'exam_duration' => '20',
             'is_active' => 1,
             'created_at' => $now,
             'updated_at' => $now

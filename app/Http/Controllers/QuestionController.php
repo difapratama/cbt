@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\CategoriesDataTable;
-use App\Http\Requests\CategoryRequest;
-use App\Models\Category;
+use App\DataTables\QuestionsDataTable;
+use App\Models\ExamMaster;
+use App\Models\Question;
 use Illuminate\Http\Request;
 
-class CategoriesController extends Controller
+class QuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(CategoriesDataTable $dataTable)
+    public function index(ExamMaster $examMaster, QuestionsDataTable $dataTable)
     {
-        return $dataTable->render('master.category.index');
+        $questions = Question::where('exam_id', $examMaster->id)->get();
+        return $dataTable->render('master.question.index', compact('questions'));
     }
 
     /**
@@ -26,7 +27,8 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('master.category.category-action', ['category' => new Category()]);
+        dd('kikuk');
+        return view('master.question.action-question');
     }
 
     /**
@@ -35,13 +37,9 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(Request $request)
     {
-        Category::create($request->all());
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Create category succesfully'
-        ]);
+        //
     }
 
     /**
@@ -61,9 +59,9 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        return view('master.category.category-action', compact('category'));
+        //
     }
 
     /**

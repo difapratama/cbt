@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\CategoriesDataTable;
-use App\Http\Requests\CategoryRequest;
+use App\DataTables\ExamMastersDataTable;
+use App\DataTables\QuestionsDataTable;
+use App\Http\Requests\ExamRequest;
 use App\Models\Category;
+use App\Models\ExamMaster;
+use App\Models\Question;
 use Illuminate\Http\Request;
 
-class CategoriesController extends Controller
+class ExamMastersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(CategoriesDataTable $dataTable)
+    public function index(ExamMastersDataTable $dataTable)
     {
-        return $dataTable->render('master.category.index');
+        $exams = ExamMaster::with('category')->get();
+        return $dataTable->with('exams', $exams)->render('master.exam.index');
     }
 
     /**
@@ -26,7 +30,8 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('master.category.category-action', ['category' => new Category()]);
+        $categories = Category::pluck('name', 'id');
+        return view('master.exam.exam-action', ['examMaster' => new ExamMaster(), 'categories' => $categories]);
     }
 
     /**
@@ -35,12 +40,15 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(ExamRequest $request)
     {
-        Category::create($request->all());
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active') ? 1 : 0;
+
+        ExamMaster::create($data);
         return response()->json([
             'status' => 'success',
-            'message' => 'Create category succesfully'
+            'message' => 'Create exam succesfully'
         ]);
     }
 
@@ -50,9 +58,10 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, QuestionsDataTable $dataTable)
     {
-        //
+        // dd($questions);
+        return $dataTable->render('master.exam.show');
     }
 
     /**
@@ -61,9 +70,10 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(ExamMaster $examMaster)
     {
-        return view('master.category.category-action', compact('category'));
+        $categories = Category::where('name', $examMaster->id)->get();
+        return view('master.exam.exam-action', compact('examMaster','categories'));
     }
 
     /**

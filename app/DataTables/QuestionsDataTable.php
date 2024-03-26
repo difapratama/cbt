@@ -2,16 +2,17 @@
 
 namespace App\DataTables;
 
-use App\Models\Category;
+use App\Models\Question;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Html\Editor\Editor;
+use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CategoriesDataTable extends DataTable
+class QuestionsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -22,40 +23,17 @@ class CategoriesDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('created_at', function ($row) {
-                return $row->created_at->format('d-m-Y H:i:s');
-            })
-            ->editColumn('updated_at', function ($row) {
-                return $row->updated_at->format('d-m-Y H:i:s');
-            })
-            ->addColumn('is_active', function($row){
-                $checkbox = '<div class="form-check">';
-                $checkbox .= '<input class="form-check-input" type="checkbox" ' . ($row->is_active == true ? 'checked' : '') . '>';
-                $checkbox .= '</div>';
-                return $checkbox;
-            })
-            ->addIndexColumn()
-            ->addColumn('action', function ($row) {
-                $action = '<div class="btn-group">';
-                if (Gate::allows('update role')) {
-                    $action .= '<button type="button" data-id='.$row->id.' button-type="edit" class="btn btn-info action"><i class="fas fa-edit"></i></button>';
-                }
-                if (Gate::allows('delete role')) {
-                    $action .= '<button type="button" data-id='.$row->id.' button-type="delete" class="btn btn-danger action"><i class="fas fa-trash"></i></button>';
-                }
-                return $action .= '</div>';
-            })
-            ->rawColumns(['is_active', 'action'])
+            ->addColumn('action', 'questions.action')
             ->setRowId('id');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Category $model
+     * @param \App\Models\Question $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Category $model): QueryBuilder
+    public function query(Question $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -68,7 +46,7 @@ class CategoriesDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('categories-table')
+            ->setTableId('questions-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
@@ -92,10 +70,9 @@ class CategoriesDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('DT_RowIndex')->title('No')->searchable(false)->orderable(false),
-            Column::make('name'),
-            Column::make('description'),
-            Column::make('is_active')->title('Status'),
+            Column::make('id'),
+            Column::make('question'),
+            Column::make('correct_answer')->title('Correct Answer'),
             Column::make('created_at'),
             Column::make('updated_at'),
             Column::computed('action')
@@ -113,6 +90,6 @@ class CategoriesDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Categories_' . date('YmdHis');
+        return 'Questions_' . date('YmdHis');
     }
 }

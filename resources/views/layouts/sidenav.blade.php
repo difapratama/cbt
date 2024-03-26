@@ -31,7 +31,7 @@
                         </p>
                     </a>
                 </li>
-                @foreach (getMenus() as $menu)
+                {{-- @foreach (getMenus() as $menu)
                     <li class="nav-item {{ request()->segment(1) == $menu->url ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->segment(1) == $menu->url ? 'active' : '' }}">
                             <i class="nav-icon fas fa-th"></i>
@@ -53,7 +53,31 @@
                         </ul>
                         
                     </li>
-                @endforeach
+                @endforeach --}}
+                <li class="nav-item">
+                    <a href="{{ route('roles.index') }}" class="nav-link">
+                        <i class="nav-icon far fa-image"></i>
+                        <p>
+                            Roles
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('categories.index') }}" class="nav-link">
+                        <i class="nav-icon far fa-image"></i>
+                        <p>
+                            Category
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('exam-masters.index') }}" class="nav-link">
+                        <i class="nav-icon far fa-image"></i>
+                        <p>
+                            Manage Exam
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf <!-- CSRF protection -->
@@ -65,7 +89,7 @@
                             </p>
                         </button>
                     </form>
-                    
+
                 </li>
 
             </ul>
