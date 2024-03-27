@@ -36,8 +36,30 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {!! $dataTable->table(['class' => 'table table-bordered table-striped']) !!}
-
+                            <table id="table-question" class="table table-bordered table-striped dataTable dtr-inline">
+                                <thead>
+                                    <tr>
+                                        <th>Exam ID</th>
+                                        <th>Category</th>
+                                        <th>Name</th>
+                                        <th>Exam Date</th>
+                                        <th>Exam Duration(minutes)</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -52,13 +74,93 @@
 
 @push('js')
     <script src="{{ asset('vendor/jquery/jquery.min.js') }} "></script>
-    {{ $dataTable->scripts() }}
+    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+
+    <script>
+        var table;
+        var table = $('.dataTable').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: true,
+            responsive: true,
+            ajax: "{{ url('master/exam-masters') }}",
+            columns: [{
+                    data: 'exam_id',
+                    name: 'exam_id'
+                },
+                {
+                    data: 'category',
+                    name: 'category'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'exam_date',
+                    name: 'exam_date'
+                },
+                {
+                    data: 'exam_duration',
+                    name: 'exam_duration'
+                },
+                {
+                    data: 'total',
+                    name: 'total'
+                },
+                {
+                    data: 'actions',
+                    name: 'actions',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
+        });
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
+        function deleteData(id) {
+            if (confirm('Delete data?')) {
+                $.post(`{{ url('mailing-lists') }}/` + id, {
+                    _method: 'delete'
+                }, function(res) {
+                    if (res.success) {
+                        table.ajax.reload();
+                        toastr.success(res.message);
+                    } else {
+                        toastr.error(res.message);
+                    }
+                }, 'json');
+            }
+        }
+    </script>
+    {{-- END  --}}
     <script>
         $(document).ready(function() {
             $('.btn-add').on('click', function() {
                 $.ajax({
                     method: 'GET',
                     url: `{{ url('master/exam-masters/create') }}`,
+                    success: function(res) {
+                        $('#modal-default').find('.modal-dialog').html(res);
+                        $('#modal-default').modal('show');
+                        store()
+                    }
+                });
+            })
+
+            $('.btn-edit').on('click', function() {
+                var examId = $(this).data('id');
+                $.ajax({
+                    method: 'GET',
+                    url: '{{ url('master/exam-masters') }}/' + examId + '/edit',
                     success: function(res) {
                         $('#modal-default').find('.modal-dialog').html(res);
                         $('#modal-default').modal('show');
@@ -85,7 +187,7 @@
                         processData: false,
                         contentType: false,
                         success: function(res) {
-                            window.LaravelDataTables["exammasters-table"].ajax.reload();
+                            table.ajax.reload();
                             $('#modal-default').modal('hide');
                         },
                         error: function(res) {

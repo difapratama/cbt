@@ -28,7 +28,7 @@ class ExamRequest extends FormRequest
             'name' => 'required',
             'exam_date' =>'required',
             'exam_duration' =>'required',
-            'is_active' =>'nullable',
+            'is_active' =>'required',
         ];
     }
 }

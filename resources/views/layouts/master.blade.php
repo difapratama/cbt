@@ -108,10 +108,10 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('asset/js/adminlte.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    {{-- <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('vendor/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('vendor/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script> --}}
     <script>
         $(document).ready(function() {
             $('#reservationdate').datetimepicker({

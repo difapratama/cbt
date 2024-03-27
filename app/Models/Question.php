@@ -9,8 +9,15 @@ class Question extends Model
 {
     use HasFactory;
 
+    protected $fillable=['exam_id','question_text'];
+
     public function exam()
     {
         return $this->belongsTo(ExamMaster::class);
+    }
+
+    public function choices()
+    {
+        return $this->hasMany(Choice::class);
     }
 }

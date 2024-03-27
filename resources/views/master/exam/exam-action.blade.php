@@ -26,16 +26,28 @@
                         <label>Category</label>
                         <select class="custom-select rounded-0" name="category_id">
                             @foreach ($categories as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
+                                <option value="{{ $id }}"
+                                    {{ $examMaster->category_id == $id ? 'selected' : '' }}>{{ $name }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Exam Title</label>
+                        <label>Exam Name</label>
                         <input type="text" value="{{ $examMaster->name }}" class="form-control" name="name"
                             placeholder="Please insert name here">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Abbreviation</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="abbreviation" value="{{ $examMaster->abbreviation }}" placeholder="Generate abbreviation here">
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn btn-danger">Generate</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -55,7 +67,8 @@
                 <div class="col-sm-12">
                     <div class="form-group">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="is_active" value="1">
+                            <input class="form-check-input" type="checkbox" name="is_active" value="1"
+                                {{ $examMaster->is_active ? 'checked' : '' }}>
                             <label class="form-check-label">is active?</label>
                         </div>
                     </div>

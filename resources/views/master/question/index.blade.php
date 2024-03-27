@@ -35,8 +35,23 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {!! $dataTable->table(['class' => 'table table-bordered table-striped']) !!}
-
+                            {{-- {!! $dataTable->table(['class' => 'table table-bordered table-striped']) !!} --}}
+                            <table id="table-question" class="table table-bordered table-striped dataTable dtr-inline">
+                                <thead>
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -50,14 +65,67 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }} "></script>
-    {{ $dataTable->scripts() }}
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script>
+        var table;
+        var table = $('.dataTable').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: true,
+            responsive: true,
+            ajax: "{{ url('master/exam-masters/' . $examMaster->id . '/questions') }}",
+            columns: [
+                {
+                    data: 'question_text',
+                    name: 'question_text'
+                },
+                {
+                    data: 'answer',
+                    name: 'answer'
+                },
+                {
+                    data: 'actions',
+                    name: 'actions',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
+        });
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
+        function deleteData(id) {
+            if (confirm('Delete data?')) {
+                $.post(`{{ url('mailing-lists') }}/` + id, {
+                    _method: 'delete'
+                }, function(res) {
+                    if (res.success) {
+                        table.ajax.reload();
+                        toastr.success(res.message);
+                    } else {
+                        toastr.error(res.message);
+                    }
+                }, 'json');
+            }
+        }
+    </script>
     <script>
         $(document).ready(function() {
             $('.btn-add').on('click', function() {
+                console.log(`{{ $examMaster->id }}`);
+                var examId = $(this).data('id');
                 $.ajax({
                     method: 'GET',
-                    url: "{{ url('master/exam-masters/') }}" + '/' + id + '/questions/create',
+                    url: "{{ url('master/exam-masters/') }}" + '/' + `{{ $examMaster->id }}` +
+                        '/questions/create',
                     success: function(res) {
                         $('#modal-default').find('.modal-dialog').html(res);
                         $('#modal-default').modal('show');
@@ -65,6 +133,42 @@
                     }
                 });
             })
+
+            function store() {
+                $('#formAction').on('submit', function(e) {
+                    e.preventDefault()
+                    const _form = this
+                    const formData = new FormData(_form);
+                    const url = this.getAttribute('action')
+
+                    $.ajax({
+                        method: 'POST',
+                        url: url,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content')
+                        },
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(res) {
+                            table.ajax.reload();
+                            $('#modal-default').modal('hide');
+                        },
+                        error: function(res) {
+                            let errors = res.responseJSON?.errors
+                            $(_form).find('.text-danger.text-small').remove()
+                            if (errors) {
+                                for (const [key, value] of Object.entries(errors)) {
+                                    $(`[name='${key}']`).parent().append(
+                                        `<span class="text-danger text-small">${ value }</span>`
+                                    )
+                                }
+                            }
+                        }
+                    })
+                })
+            }
         })
     </script>
 @endpush

@@ -16,10 +16,7 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('exam_id');
-            $table->string('question');
-            $table->string('correct_answer');
-            $table->string('option');
-            $table->string('status');
+            $table->text('question_text');
             $table->timestamps();
         });
     }

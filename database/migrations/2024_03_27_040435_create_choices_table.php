@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('exam_masters', function (Blueprint $table) {
+        Schema::create('choices', function (Blueprint $table) {
             $table->id();
-            $table->string('exam_id');
-            $table->foreignId('category_id');
-            $table->string('abbreviation');
-            $table->string('name');
-            $table->date('exam_date');
-            $table->string('exam_duration');
-            $table->string('is_active')->nullable()->default(1);
+            $table->foreignId('question_id')->constrained()->onDelete('cascade');
+            $table->text('choice_text');
+            $table->boolean('is_correct');
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exam_masters');
+        Schema::dropIfExists('choices');
     }
 };
