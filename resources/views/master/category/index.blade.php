@@ -36,8 +36,26 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {!! $dataTable->table(['class' => 'table table-bordered table-striped']) !!}
-
+                            <table id="table-category" class="table table-bordered table-striped dataTable dtr-inline">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -52,7 +70,64 @@
 
 @push('js')
     <script src="{{ asset('vendor/jquery/jquery.min.js') }} "></script>
-    {{ $dataTable->scripts() }}
+    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script>
+        var table;
+        var table = $('.dataTable').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: true,
+            responsive: true,
+            ajax: "{{ url('master/categories') }}",
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'description',
+                    name: 'description'
+                },
+                {
+                    data: 'is_active',
+                    name: 'is_active'
+                },
+                {
+                    data: 'actions',
+                    name: 'actions',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
+        });
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
+        function deleteData(id) {
+            if (confirm('Delete data?')) {
+                $.post(`{{ url('mailing-lists') }}/` + id, {
+                    _method: 'delete'
+                }, function(res) {
+                    if (res.success) {
+                        table.ajax.reload();
+                        toastr.success(res.message);
+                    } else {
+                        toastr.error(res.message);
+                    }
+                }, 'json');
+            }
+        }
+    </script>
     <script>
         $(document).ready(function() {
             $('.btn-add').on('click', function() {
@@ -85,7 +160,7 @@
                         processData: false,
                         contentType: false,
                         success: function(res) {
-                            window.LaravelDataTables["categories-table"].ajax.reload();
+                            table.ajax.reload();
                             $('#modal-default').modal('hide');
                         },
                         error: function(res) {
@@ -103,7 +178,7 @@
                 })
             }
 
-            $('#categories-table').on('click', '.action', function() {
+            $('#table-category').on('click', '.action', function() {
                 let data = $(this).data();
                 let id = data.id;
                 let button_type = $(this).attr('button-type');
@@ -127,8 +202,7 @@
                                         'content')
                                 },
                                 success: function(res) {
-                                    window.LaravelDataTables["categories-table"].ajax
-                                        .reload();
+                                    table.ajax.reload();
                                     Swal.fire(
                                         'Deleted!',
                                         res.mesage,

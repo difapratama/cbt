@@ -6,6 +6,7 @@ use App\DataTables\CategoriesDataTable;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class CategoriesController extends Controller
 {
@@ -16,7 +17,19 @@ class CategoriesController extends Controller
      */
     public function index(CategoriesDataTable $dataTable)
     {
-        return $dataTable->render('master.category.index');
+        if (request()->ajax()) {
+            $exams = Category::query();
+            return DataTables::eloquent($exams)
+                ->addColumn('actions', function ($row) {
+                    $action = '<div class="btn-group">';
+                    $action .= '<button type="button" data-id=' . $row->id . ' button-type="edit" class="btn btn-info btn-sm action btn-edit mr-2"><i class="fas fa-edit"></i></button>';
+                    $action .= '<button type="button" data-id=' . $row->id . ' button-type="delete" class="btn btn-danger btn-sm action mr-2"><i class="fas fa-trash"></i></button>';
+                    return $action .= '</div>';
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+        return view('master.category.index');
     }
 
     /**
@@ -73,9 +86,18 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->is_active = $request->input('is_active', 0);
+
+        $category->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Update data succesfully'
+        ]);
     }
 
     /**

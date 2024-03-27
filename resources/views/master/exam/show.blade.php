@@ -23,25 +23,66 @@
         </div>
     </div>
     <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header border-0">
-                            <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-primary float-left btn-add"><i
-                                        class="fas fa-plus"></i>
-                                    Add Questionn</button>
+
+        <div class="card">
+            
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                        <div class="row mt-3">
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">Jumlah Soal</span>
+                                        <span class="info-box-number text-center text-muted mb-0">30</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">Total Siswa</span>
+                                        <span class="info-box-number text-center text-muted mb-0">30</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">Author</span>
+                                        <span class="info-box-number text-center text-muted mb-0">Octavarium</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            {!! $dataTable->table(['class' => 'table table-bordered table-striped']) !!}
-
-                        </div>
+                        
                     </div>
                 </div>
+                <b>Registerd Student</b>
+                <table id="table-question" class="table table-bordered table-striped dataTable dtr-inline">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Octa</td>
+                            <td>octa@gmail.com</td>
+                            <td>085777007002</td>
+                            <td>Approved</td>
+                            <td><button class="btn btn-success btn-sm">Approve</button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+
         </div>
+
     </section>
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
@@ -51,7 +92,6 @@
 
 @push('js')
     <script src="{{ asset('vendor/jquery/jquery.min.js') }} "></script>
-    {{ $dataTable->scripts() }}
     <script>
         $(document).ready(function() {
             console.log($this.data);

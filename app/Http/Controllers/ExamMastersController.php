@@ -21,8 +21,6 @@ class ExamMastersController extends Controller
      */
     public function index(ExamMaster $examMaster)
     {
-        // $exams = ExamMaster::with('category')->get();
-        // return $dataTable->with('exams', $exams)->render('master.exam.index');
         if (request()->ajax()) {
             $exams = ExamMaster::with('category');
             return DataTables::eloquent($exams)
@@ -32,6 +30,7 @@ class ExamMastersController extends Controller
                 ->addColumn('actions', function ($row) {
                     $action = '<div class="btn-group">';
                     $action .= '<a href="' . route('exam-questions.index', $row->id) . '" class="btn btn-primary btn-sm action mr-2"><i class="fas fa-plus"></i></a>';
+                    $action .= '<a href="' . route('exam-masters.show', $row->id) . '" class="btn btn-primary btn-sm action mr-2"><i class="fas fa-eye"></i></a>';
                     $action .= '<button type="button" data-id=' . $row->id . ' button-type="edit" class="btn btn-info btn-sm action btn-edit mr-2"><i class="fas fa-edit"></i></button>';
                     $action .= '<button type="button" data-id=' . $row->id . ' button-type="delete" class="btn btn-danger btn-sm action mr-2"><i class="fas fa-trash"></i></button>';
                     $action .= '<a href="' . route('register-exam', $row->exam_id) . '" target="_blank" class="btn btn-success btn-sm action"><i class="nav-icon fas fa-book"></i></a>';
@@ -102,8 +101,7 @@ class ExamMastersController extends Controller
      */
     public function show($id, QuestionsDataTable $dataTable)
     {
-        // dd($questions);
-        return $dataTable->render('master.exam.show');
+        return view('master.exam.show');
     }
 
     /**

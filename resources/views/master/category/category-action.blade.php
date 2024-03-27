@@ -6,10 +6,7 @@
             @method('put')
         @endif
         <div class="modal-header">
-            @if ($category->id)
-                <h4 class="modal-title">Update Category</h4>
-            @endif
-            <h4 class="modal-title">Create Category</h4>
+            <h4 class="modal-title">{{ $category->id ? 'Update exam' : 'Create exam' }}</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
