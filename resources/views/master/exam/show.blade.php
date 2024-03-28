@@ -11,7 +11,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Exam Lists</h1>
+                    <h1 class="m-0">Exam Details</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -25,7 +25,9 @@
     <section class="content">
 
         <div class="card">
-            
+            <div class="card-header">
+                <a href="{{ route('exam-masters.index') }}" class="btn btn-primary btn-sm">back</a>
+            </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
@@ -34,9 +36,10 @@
                                 <div class="info-box bg-light">
                                     <div class="info-box-content">
                                         <span class="info-box-text text-center text-muted">Jumlah Soal</span>
-                                        <span class="info-box-number text-center text-muted mb-0">30</span>
+                                        <span class="info-box-number text-center text-muted mb-0">{{ $examMaster->questions()->count() }}</span>
                                     </div>
                                 </div>
+                                <a href="{{ route('exam-questions.index', $examMaster->id) }}" class="btn btn-info btn-sm">Question List</a>
                             </div>
                             <div class="col-12 col-sm-4">
                                 <div class="info-box bg-light">
@@ -55,10 +58,11 @@
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
-                <b>Registerd Student</b>
+                <div class="row mt-3">
+                    <b>Registerd Student</b>
+                </div>
                 <table id="table-question" class="table table-bordered table-striped dataTable dtr-inline">
                     <thead>
                         <tr>
@@ -70,13 +74,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Octa</td>
-                            <td>octa@gmail.com</td>
-                            <td>085777007002</td>
-                            <td>Approved</td>
-                            <td><button class="btn btn-success btn-sm">Approve</button></td>
-                        </tr>
+                        @foreach ($registeredStudents as $student)
+                            <tr>
+                                <td>{{ $student->name }}</td>
+                                <td>{{ $student->email }}</td>
+                                <td>085777007002</td>
+                                <td>Approved</td>
+                                <td><button class="btn btn-success btn-sm">Approve</button></td>
+                            </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>

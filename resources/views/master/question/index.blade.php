@@ -29,9 +29,12 @@
                     <div class="card">
                         <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-primary float-left btn-add"><i
-                                        class="fas fa-plus"></i>
-                                    Add Questionn</button>
+                                <div class="btn-group">
+                                    <a href="{{ route('exam-masters.show', $examMaster->id) }}"
+                                        class="btn btn-primary btn-sm mr-1">back</a>
+                                    <button type="button" class="btn btn-success btn-sm btn-add"><i class="fas fa-plus"></i> add
+                                        question</button>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">
@@ -78,8 +81,7 @@
             searching: true,
             responsive: true,
             ajax: "{{ url('master/exam-masters/' . $examMaster->id . '/questions') }}",
-            columns: [
-                {
+            columns: [{
                     data: 'question_text',
                     name: 'question_text'
                 },

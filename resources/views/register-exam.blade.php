@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdminLTE 3 | Boxed Layout</title>
-
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -14,7 +13,6 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('asset/css/adminlte.min.css') }}">
 </head>
-
 <body class="hold-transition register-page">
     <div class="register-box">
         <div class="card card-outline card-primary">
@@ -23,29 +21,13 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Register {{ $examMaster->name }}</p>
-
-                <form action="../../index.html" method="post">
+                <form action="{{ route('register-exam', $examMaster->id) }}" method="post">
+                    @csrf
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Full name">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-user"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
+                        <input type="email" class="form-control" name="email" placeholder="Email">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Address">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-user"></span>
                             </div>
                         </div>
                     </div>
@@ -61,14 +43,9 @@
             <!-- /.form-box -->
         </div><!-- /.card -->
     </div>
-    <!-- /.register-box -->
-
     <script src="{{ asset('vendor/jquery/jquery.min.js') }} "></script>
-    <!-- Bootstrap 4 -->
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }} "></script>
-    <!-- AdminLTE App -->
     <script src="{{ asset('asset/js/adminlte.js') }}"></script>
 </body>
 
 </html>
-

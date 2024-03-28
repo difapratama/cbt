@@ -30,7 +30,7 @@
                     <div class="card">
                         <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-primary float-left btn-add"><i
+                                <button type="button" class="btn btn-primary float-left btn-add btn-sm"><i
                                         class="fas fa-plus"></i>
                                     Add New Exam</button>
                             </div>
@@ -44,7 +44,7 @@
                                         <th>Name</th>
                                         <th>Exam Date</th>
                                         <th>Exam Duration(minutes)</th>
-                                        <th>Total</th>
+                                        <th>Attendant</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -108,8 +108,8 @@
                     name: 'exam_duration'
                 },
                 {
-                    data: 'total',
-                    name: 'total'
+                    data: 'attendant',
+                    name: 'attendant'
                 },
                 {
                     data: 'actions',

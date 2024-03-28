@@ -20,4 +20,11 @@ class ExamMaster extends Model
     {
         return $this->hasMany(Question::class, 'exam_id');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot('is_approved')
+            ->withTimestamps();;
+    }
 }

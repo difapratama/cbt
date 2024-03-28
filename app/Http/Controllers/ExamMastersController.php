@@ -29,15 +29,14 @@ class ExamMastersController extends Controller
                 })
                 ->addColumn('actions', function ($row) {
                     $action = '<div class="btn-group">';
-                    $action .= '<a href="' . route('exam-questions.index', $row->id) . '" class="btn btn-primary btn-sm action mr-2"><i class="fas fa-plus"></i></a>';
                     $action .= '<a href="' . route('exam-masters.show', $row->id) . '" class="btn btn-primary btn-sm action mr-2"><i class="fas fa-eye"></i></a>';
                     $action .= '<button type="button" data-id=' . $row->id . ' button-type="edit" class="btn btn-info btn-sm action btn-edit mr-2"><i class="fas fa-edit"></i></button>';
                     $action .= '<button type="button" data-id=' . $row->id . ' button-type="delete" class="btn btn-danger btn-sm action mr-2"><i class="fas fa-trash"></i></button>';
                     $action .= '<a href="' . route('register-exam', $row->exam_id) . '" target="_blank" class="btn btn-success btn-sm action"><i class="nav-icon fas fa-book"></i></a>';
                     return $action .= '</div>';
                 })
-                ->addColumn('total', function ($row) {
-                    return $row->questions()->count();
+                ->addColumn('attendant', function ($row) {
+                    return $row->users()->count();
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
@@ -99,9 +98,10 @@ class ExamMastersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, QuestionsDataTable $dataTable)
+    public function show(ExamMaster $examMaster)
     {
-        return view('master.exam.show');
+        $registeredStudents = $examMaster->users()->get();
+        return view('master.exam.show', compact('examMaster', 'registeredStudents'));
     }
 
     /**
