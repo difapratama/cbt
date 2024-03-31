@@ -1,3 +1,7 @@
+@php
+    $user = Auth::user();
+@endphp
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
@@ -13,9 +17,11 @@
             <div class="image">
                 <img src="{{ asset('asset/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
             </div>
-            <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
-            </div>
+            @if ($user)
+                <div class="info">
+                    <a href="#" class="d-block">{{ $user->email }}</a>
+                </div>
+            @endif
         </div>
 
         <!-- Sidebar Menu -->

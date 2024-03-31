@@ -149,4 +149,15 @@ class ExamMastersController extends Controller
     {
         //
     }
+
+    public function showExamPage()
+    {
+        return view('master.exam.exam-page');
+    }
+
+    public function processStudent()
+    {
+        
+        return view('master.exam.exam-page');
+    }
 }

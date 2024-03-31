@@ -36,10 +36,12 @@
                                 <div class="info-box bg-light">
                                     <div class="info-box-content">
                                         <span class="info-box-text text-center text-muted">Jumlah Soal</span>
-                                        <span class="info-box-number text-center text-muted mb-0">{{ $examMaster->questions()->count() }}</span>
+                                        <span
+                                            class="info-box-number text-center text-muted mb-0">{{ $examMaster->questions()->count() }}</span>
                                     </div>
                                 </div>
-                                <a href="{{ route('exam-questions.index', $examMaster->id) }}" class="btn btn-info btn-sm">Question List</a>
+                                <a href="{{ route('exam-questions.index', $examMaster->id) }}"
+                                    class="btn btn-info btn-sm">Question List</a>
                             </div>
                             <div class="col-12 col-sm-4">
                                 <div class="info-box bg-light">
@@ -80,7 +82,11 @@
                                 <td>{{ $student->email }}</td>
                                 <td>085777007002</td>
                                 <td>Approved</td>
-                                <td><button class="btn btn-success btn-sm">Approve</button></td>
+                                @if ($student->is_approved == 1)
+                                    <td><button class="btn btn-success btn-sm">Approve</button></td>
+                                @else
+                                    <td><button class="btn btn-danger btn-sm">Decline</button></td>
+                                @endif
                             </tr>
                         @endforeach
 
